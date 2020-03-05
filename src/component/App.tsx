@@ -39,7 +39,7 @@ interface FAILURE {
 
 type MovieActions = REQUEST | SUCCESS | FAILURE
 
-const MOVIE_API_URL: string = 'https://www.omdbapi.com/?s=man&apikey=4a3b711b'
+const MOVIE_API_URL = 'https://www.omdbapi.com/?s=man&apikey=4a3b711b'
 
 const initialState: State = {
     loading: true,
@@ -47,29 +47,28 @@ const initialState: State = {
     errorMessage: null,
 }
 
-const reducer = (state: State, action: MovieActions): State => {
-    console.log(action)
+const reducer: React.Reducer<State, MovieActions> = (state, action): State => {
     switch (action.type) {
-        case 'SEARCH_MOVIES_REQUEST':
+        case ActionName.REQUEST:
             return {
                 ...state,
                 loading: true,
                 errorMessage: null
             }
-        case 'SEARCH_MOVIES_SUCCESS':
+        case ActionName.SUCCESS:
             return {
                 ...state,
                 loading: false,
                 movies: action.payload
             }
-        case 'SEARCH_MOVIES_FAILURE':
+        case ActionName.FAILURE:
             return {
                 ...state,
                 loading: false,
                 errorMessage: action.error
             }
         default:
-            return state
+            throw new Error()
     }
 }
 
@@ -87,7 +86,7 @@ const App: React.FC = () => {
             })
     }, [])
 
-    const search = (searchValue: string) => {
+    const search = (searchValue: string): void => {
         dispatch({
             type: ActionName.REQUEST
         })
