@@ -1,7 +1,13 @@
 import React, {useReducer, useEffect} from 'react'
-import Header from './Header'
-import Movie from './Movie'
-import Search from './Search'
+import {
+    CssBaseline,
+    Container,
+    Typography,
+    Box,
+} from '@material-ui/core'
+import Header from './organisms/Header'
+import Movie from './organisms/Movie'
+import Search from './organisms/Search'
 
 export interface Movie {
     Title: string
@@ -111,22 +117,35 @@ const App: React.FC = () => {
     const {movies, errorMessage, loading} = state
 
     return (
-        <div>
-            <Header text='HOOKED'/>
-            <Search search={search}/>
-            <p>Sharing a few of our favourite movies</p>
-            <div>
-                {loading && !errorMessage ? (
-                    <span>loading... </span>
-                ) : errorMessage ? (
-                    <div>{errorMessage}</div>
-                ) : (
-                    movies.map((movie: Movie, index: number) => (
-                        <Movie key={`${index}-${movie.Title}`} movie={movie}/>
-                    ))
-                )}
-            </div>
-        </div>
+        <React.Fragment>
+            <Header text='MovieSearch'/>
+            <Container component='main' maxWidth='md'>
+                <CssBaseline/>
+                <Box
+                    mt={4}
+                    textAlign='center'
+                >
+                    <Search search={search}/>
+                    <Typography component='p'>Sharing a few of our favourite movies</Typography>
+                </Box>
+                <Box
+                    mt={4}
+                    display='flex'
+                    flexWrap='wrap'
+                    justifyContent='space-around'
+                >
+                    {loading && !errorMessage ? (
+                        <Typography component='p'>loading... </Typography>
+                    ) : errorMessage ? (
+                        <Typography component='p'>{errorMessage}</Typography>
+                    ) : (
+                        movies.map((movie: Movie, index: number) => (
+                            <Movie key={`${index}-${movie.Title}`} movie={movie}/>
+                        ))
+                    )}
+                </Box>
+            </Container>
+        </React.Fragment>
     )
 }
 

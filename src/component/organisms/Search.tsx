@@ -1,4 +1,7 @@
 import React, {useState} from 'react'
+import {
+    TextField,
+} from '@material-ui/core'
 
 interface SearchProps {
     search: (arg: string) => void
@@ -7,7 +10,7 @@ interface SearchProps {
 const Search: React.FC<SearchProps> = ({search}) => {
     const [searchValue, setSearchValue] = useState('')
 
-    const handleSearchInputChanges = (e: any) => {
+    const handleSearchInputChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value)
     }
 
@@ -15,23 +18,24 @@ const Search: React.FC<SearchProps> = ({search}) => {
         setSearchValue('')
     }
 
-    const callSearchFunction = (e: any) => {
+    const callSearchFunction = (e: React.MouseEvent<HTMLFormElement>): void => {
         e.preventDefault()
         search(searchValue)
         resetInputField()
     }
 
     return (
-        <form>
-            <input
+        <form
+            onSubmit={callSearchFunction}
+        >
+            <TextField
+                type='text'
                 value={searchValue}
                 onChange={handleSearchInputChanges}
-                type="text"
             />
-            <input
-                onClick={callSearchFunction}
-                type="submit"
-                value="SEARCH"
+            <TextField
+                type='submit'
+                value='SEARCH'
             />
         </form>
     )
